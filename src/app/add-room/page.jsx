@@ -8,7 +8,6 @@ import {
   Form,
   Input,
   TextArea,
-  Textarea,
 } from "@heroui/react";
 import { toast } from "react-hot-toast";
 
@@ -16,14 +15,52 @@ const AddRoomPage = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [amenities, setAmenities] = useState([]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    setTimeout(() => {
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData.entries());
+
+    const roomData = {
+      roomName: data.roomName,
+      description: data.description,
+      image: data.image,
+      floor: data.floor,
+      capacity: Number(data.capacity),
+      hourlyRate: Number(data.hourlyRate),
+      amenities: amenities,
+    };
+
+    console.log("Room Data:", roomData);
+
+    try {
+      const res = await fetch("http://localhost:5000/rooms", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(roomData),
+      });
+
+      const result = await res.json();
+      console.log("Server Response:", result);
+
+      if (!res.ok) {
+        throw new Error("Failed to add room");
+      }
+
       toast.success("Room added successfully!");
+
+      form.reset();
+      setAmenities([]);
+    } catch (error) {
+      console.error("Add room error:", error);
+      toast.error("Failed to add room");
+    } finally {
       setIsSubmitting(false);
-    }, 1000);
+    }
   };
 
   return (
@@ -40,7 +77,6 @@ const AddRoomPage = () => {
 
         <div className="bg-[#111827] border border-gray-700/80 rounded-3xl p-8 md:p-12 shadow-2xl">
           <Form onSubmit={handleSubmit} className="space-y-8">
-            
             <div>
               <label className="block text-sm font-semibold mb-2 text-gray-300">
                 Room Name
@@ -81,7 +117,9 @@ const AddRoomPage = () => {
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
               <div>
-                <label className="block text-sm font-semibold mb-2 text-gray-300">Floor</label>
+                <label className="block text-sm font-semibold mb-2 text-gray-300">
+                  Floor
+                </label>
                 <Input
                   name="floor"
                   isRequired
@@ -89,8 +127,11 @@ const AddRoomPage = () => {
                   className="w-full bg-[#1f2937] border border-gray-600 focus:border-blue-500 text-white rounded-2xl"
                 />
               </div>
+
               <div>
-                <label className="block text-sm font-semibold mb-2 text-gray-300">Capacity</label>
+                <label className="block text-sm font-semibold mb-2 text-gray-300">
+                  Capacity
+                </label>
                 <Input
                   name="capacity"
                   isRequired
@@ -99,8 +140,11 @@ const AddRoomPage = () => {
                   className="w-full bg-[#1f2937] border border-gray-600 focus:border-blue-500 text-white rounded-2xl"
                 />
               </div>
+
               <div>
-                <label className="block text-sm font-semibold mb-2 text-gray-300">Hourly Rate ($)</label>
+                <label className="block text-sm font-semibold mb-2 text-gray-300">
+                  Hourly Rate ($)
+                </label>
                 <Input
                   name="hourlyRate"
                   isRequired
@@ -115,6 +159,7 @@ const AddRoomPage = () => {
               <label className="block text-sm font-semibold mb-4 text-gray-300">
                 Amenities
               </label>
+
               <CheckboxGroup
                 value={amenities}
                 onChange={setAmenities}
@@ -142,15 +187,20 @@ const AddRoomPage = () => {
 
             <div className="flex flex-col md:flex-row gap-4">
               <Button
-              type="submit"
-              isLoading={isSubmitting}
-              className="w-full h-14 bg-blue-600 hover:bg-blue-500 text-white font-semibold text-lg rounded-2xl mt-6 shadow-lg shadow-blue-600/30 transition-all"
-            >
-              {isSubmitting ? "Publishing Room..." : "Publish Room"}
-            </Button>
-            <Button variant="danger-soft" type="reset" className="w-full h-14 bg-red-600 hover:bg-red-500 text-white font-semibold text-lg rounded-2xl mt-6 shadow-lg shadow-red-600/30 transition-all">
-              Reset
-            </Button>
+                type="submit"
+                isLoading={isSubmitting}
+                className="w-full h-14 bg-blue-600 hover:bg-blue-500 text-white font-semibold text-lg rounded-2xl mt-6 shadow-lg shadow-blue-600/30 transition-all"
+              >
+                {isSubmitting ? "Publishing Room..." : "Publish Room"}
+              </Button>
+
+              <Button
+                type="reset"
+                onPress={() => setAmenities([])}
+                className="w-full h-14 bg-red-600 hover:bg-red-500 text-white font-semibold text-lg rounded-2xl mt-6 shadow-lg shadow-red-600/30 transition-all"
+              >
+                Reset
+              </Button>
             </div>
           </Form>
         </div>
