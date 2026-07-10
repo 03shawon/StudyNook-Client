@@ -1,4 +1,5 @@
 import { Button } from "@heroui/react";
+import Image from "next/image";
 import Link from "next/link";
 
 const AllRoomsCard = ({ room }) => {
@@ -6,10 +7,12 @@ const AllRoomsCard = ({ room }) => {
     <div className="group overflow-hidden rounded-3xl border border-white/10 bg-[#111827] shadow-xl transition-all duration-300 hover:-translate-y-1 hover:border-yellow-400/50 hover:shadow-yellow-400/10">
       {/* Image */}
       <div className="relative h-56 w-full overflow-hidden bg-gray-800">
-        <img
+        <Image
           src={room?.image}
           alt={room?.roomName}
           className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+          width={800}
+          height={600}  
         />
 
         <div className="absolute right-4 top-4 rounded-full bg-yellow-400 px-4 py-1 text-sm font-bold text-black shadow-lg">
