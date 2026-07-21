@@ -45,7 +45,6 @@ const AllRoomsCard = ({ rooms }) => {
                 </span>
               ))}
 
-              {/* এখানেও একই চেক করা হয়েছে */}
               {(room.amenities || []).length > 3 && (
                 <span className="px-2 py-1 bg-blue-600/20 text-blue-400 text-xs rounded-md">
                   +{(room.amenities || []).length - 3} more
