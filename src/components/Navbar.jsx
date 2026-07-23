@@ -3,7 +3,8 @@
 import { useState } from "react";
 import Link from "next/link";
 import { FiMenu, FiX } from "react-icons/fi";
-import { Button } from "@heroui/react";
+import { Avatar, Button } from "@heroui/react";
+import { authClient, useSession } from "@/lib/auth-client";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -15,6 +16,15 @@ const Navbar = () => {
     { name: "My Listings", path: "/my-listings" },
     { name: "My Bookings", path: "/my-bookings" },
   ];
+
+  const { data: session, isPending } = useSession();
+  const user = session?.user;
+  // console.log(user)
+  console.log(user?.name, user?.image, 'from seess')
+
+  const handleSignOut = async () => {
+    await authClient.signOut();
+  };
 
   return (
     <nav className="bg-[#1a1a2e] text-white sticky top-0 z-50 shadow-lg border-b border-gray-700/50">
@@ -40,28 +50,38 @@ const Navbar = () => {
           </div>
 
           <div className="hidden lg:flex items-center gap-4">
-            <Link
-              href="/login"
-              className="px-5 py-2 text-sm border border-gray-500 rounded-lg hover:bg-white hover:text-[#1a1a2e] transition-all"
-            >
-              Login
-            </Link>
-            <Link
-              href="/register"
-              className="px-5 py-2 text-sm bg-blue-600 hover:bg-blue-700 rounded-lg font-semibold transition-all"
-            >
-              Register
-            </Link>
-            <Button
-            
-              size="md"
-              color="danger"
-              variant="danger"
-              className="font-semibold rounded-lg"
-              
-            >
-              Log Out
-            </Button>
+            {!user ? (
+              <>
+                <Link
+                  href="/login"
+                  className="px-5 py-2 text-sm border border-gray-500 rounded-lg hover:bg-white hover:text-[#1a1a2e] transition-all"
+                >
+                  Login
+                </Link>
+                <Link
+                  href="/register"
+                  className="px-5 py-2 text-sm bg-blue-600 hover:bg-blue-700 rounded-lg font-semibold transition-all"
+                >
+                  Register
+                </Link>
+              </>
+            ) : (
+              <>
+                <Avatar>
+                  <Avatar.Image alt={user?.name} src={user?.image} />
+                  <Avatar.Fallback>{user.name.charAt(0)}</Avatar.Fallback>
+                </Avatar>
+                <Button
+                  onClick={handleSignOut}
+                  size="md"
+                  color="danger"
+                  variant="danger"
+                  className="font-semibold rounded-lg"
+                >
+                  Log Out
+                </Button>
+              </>
+            )}
           </div>
 
           <button
@@ -86,23 +106,40 @@ const Navbar = () => {
             </Link>
           ))}
           <div className="flex flex-col gap-3 pt-4">
-            <Link
-              href="/login"
-              className="text-center py-2 border border-gray-500 rounded-lg"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Login
-            </Link>
-            <Link
-              href="/register"
-              className="text-center py-2 bg-blue-600 rounded-lg"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Register
-            </Link>
-            <Button fullWidth color="danger" variant="danger" className={'rounded-lg'}>
-              Log Out
-            </Button>
+            {!user ? (
+              <>
+                <Link
+                  href="/login"
+                  className="text-center py-2 border border-gray-500 rounded-lg"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Login
+                </Link>
+                <Link
+                  href="/register"
+                  className="text-center py-2 bg-blue-600 rounded-lg"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Register
+                </Link>
+              </>
+            ) : (
+              <>
+                <Avatar>
+                  <Avatar.Image alt={user?.name} src={user?.image} />
+                  <Avatar.Fallback>{user.name.charAt(0)}</Avatar.Fallback>
+                </Avatar>
+                <Button
+                  onClick={handleSignOut}
+                  fullWidth
+                  color="danger"
+                  variant="danger"
+                  className={"rounded-lg"}
+                >
+                  Log Out
+                </Button>
+              </>
+            )}
           </div>
         </div>
       )}
