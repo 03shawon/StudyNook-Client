@@ -15,6 +15,7 @@ import {
 } from 'lucide-react';
 import { Button } from '@heroui/react';
 import DeleteProductModal from './DeleteProductModal';
+import BookingRoomModal from './BookingRoomModal';
 
 const RoomDetailsCard = ({ room }) => {
   const roomId = room?._id || room?.id;
@@ -22,7 +23,6 @@ const RoomDetailsCard = ({ room }) => {
   return (
     <div className="bg-[#1a1a2e] rounded-3xl border border-gray-800/80 overflow-hidden shadow-2xl transition-all">
       
-      {/* Banner / Image */}
       <div className="relative h-64 md:h-80 w-full bg-gray-900">
         {room?.image ? (
           <Image
@@ -61,10 +61,8 @@ const RoomDetailsCard = ({ room }) => {
         </Link>
       </div>
 
-      {/* Main Content */}
       <div className="p-6 md:p-8 space-y-6">
         
-        {/* Header Details */}
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-6 border-b border-gray-800/80">
           <div>
             <h1 className="text-2xl md:text-4xl font-black text-white tracking-tight mb-2">
@@ -94,7 +92,6 @@ const RoomDetailsCard = ({ room }) => {
           </div>
         </div>
 
-        {/* Description */}
         <div>
           <h2 className="text-base font-bold text-gray-200 mb-2 flex items-center gap-2">
             <FileText className="w-4 h-4 text-blue-400" />
@@ -105,7 +102,6 @@ const RoomDetailsCard = ({ room }) => {
           </p>
         </div>
 
-        {/* Amenities */}
         <div>
           <h2 className="text-base font-bold text-gray-200 mb-3 flex items-center gap-2">
             <Sparkles className="w-4 h-4 text-blue-400" />
@@ -128,21 +124,11 @@ const RoomDetailsCard = ({ room }) => {
           </div>
         </div>
 
-        {/* Bottom Action Bar */}
         <div className="pt-6 border-t border-gray-800/80 flex flex-col sm:flex-row items-center justify-between gap-4">
           
-          {/* Primary Action: Book Now */}
-          <Button
-            size="lg"
-            className="w-full sm:w-auto px-8 py-3.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold text-sm rounded-2xl transition-all shadow-lg shadow-blue-600/25 active:scale-95 flex items-center justify-center gap-2"
-          >
-            <Sparkles className="w-4 h-4 text-amber-300 fill-amber-300" />
-            <span>Book Now</span>
-          </Button>
+        <BookingRoomModal room={room}></BookingRoomModal>
 
-          {/* Management Buttons */}
           <div className="flex items-center gap-3 w-full sm:w-auto">
-            {/* Edit Button */}
             <Link 
               href={`/rooms/${roomId}/edit`}
               className="flex-1 sm:flex-initial"

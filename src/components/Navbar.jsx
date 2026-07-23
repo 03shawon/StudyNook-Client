@@ -20,7 +20,7 @@ const Navbar = () => {
   const { data: session, isPending } = useSession();
   const user = session?.user;
   // console.log(user)
-  console.log(user?.name, user?.image, 'from seess')
+  // console.log(user?.name, user?.image, 'from seess')
 
   const handleSignOut = async () => {
     await authClient.signOut();
@@ -68,7 +68,7 @@ const Navbar = () => {
             ) : (
               <>
                 <Avatar>
-                  <Avatar.Image alt={user?.name} src={user?.image} />
+                  <Avatar.Image referrerPolicy="no-referrer" alt={user?.name} src={user?.image} />
                   <Avatar.Fallback>{user.name.charAt(0)}</Avatar.Fallback>
                 </Avatar>
                 <Button
@@ -126,7 +126,7 @@ const Navbar = () => {
             ) : (
               <>
                 <Avatar>
-                  <Avatar.Image alt={user?.name} src={user?.image} />
+                  <Avatar.Image referrerPolicy="no-referrer" alt={user?.name} src={user?.image} />
                   <Avatar.Fallback>{user.name.charAt(0)}</Avatar.Fallback>
                 </Avatar>
                 <Button

@@ -42,6 +42,11 @@ const RegisterPage = () => {
       router.push("/login");
     }
   };
+  const handleGoogleSignIn = async () => {
+    const data = await authClient.signIn.social({
+      provider: "google",
+    });
+  };
   return (
     <div className="min-h-screen bg-[#0f172a] flex items-center justify-center p-4 md:p-8">
       <Card className="bg-[#1a1a2e] border border-gray-800/80 shadow-2xl p-6 md:p-10 rounded-3xl w-full max-w-md text-white">
@@ -151,6 +156,7 @@ const RegisterPage = () => {
         </div>
 
         <Button
+          onClick={handleGoogleSignIn}
           type="button"
           className="w-full bg-[#0f172a] hover:bg-gray-800 text-white font-semibold text-sm rounded-2xl border border-gray-800 transition-all flex items-center justify-center gap-3 py-4 cursor-pointer"
         >
