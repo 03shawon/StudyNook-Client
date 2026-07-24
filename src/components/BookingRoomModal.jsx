@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useState, useMemo } from "react";
@@ -98,7 +97,7 @@ const BookingRoomModal = ({ room }) => {
         userImage: user?.image,
 
         roomId: room?._id,
-        roomName: room?.name ,
+        roomName: room?.name,
         roomImage: room?.image,
         roomRate: hourlyRate,
         roomCapacity: room?.capacity,
@@ -115,11 +114,10 @@ const BookingRoomModal = ({ room }) => {
 
       console.log("Submitting Booking Data:", bookingData);
 
-
       const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/booking`, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json", 
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(bookingData),
       });
@@ -169,10 +167,9 @@ const BookingRoomModal = ({ room }) => {
             </Modal.Header>
 
             <Modal.Body className="py-4 space-y-4">
-              {/* Date Input */}
               <div className="space-y-1.5">
                 <label className="text-xs font-medium text-gray-300 flex items-center gap-1.5">
-                  <CalendarIcon className="w-3.5 h-3.5 text-blue-400" /> Select
+                  <CalendarIcon className="w-3.5 h-3.5 text-blue-400 " /> Select
                   Date
                 </label>
                 <input
@@ -180,7 +177,7 @@ const BookingRoomModal = ({ room }) => {
                   min={todayStr}
                   value={date}
                   onChange={(e) => setDate(e.target.value)}
-                  className="w-full bg-gray-900/80 border border-gray-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-blue-500 transition-colors"
+                  className="w-full bg-gray-900/80 border border-gray-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-blue-500 transition-colors cursor-pointer [color-scheme:dark]"
                 />
               </div>
 
